@@ -36,16 +36,19 @@ class SpeedDial extends StatefulWidget {
   }
 }
 
-class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMixin {
+class _SpeedDialState extends State<SpeedDial>
+    with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<Color> _backgroundColorAnimation;
   Animation<Color> _foregroundColorAnimation;
-  final List<Animation<double>> _speedDialChildAnimations = <Animation<double>>[];
+  final List<Animation<double>> _speedDialChildAnimations =
+      <Animation<double>>[];
 
   @override
   void initState() {
-    _animationController =
-        widget.controller ?? AnimationController(vsync: this, duration: const Duration(milliseconds: 450));
+    _animationController = widget.controller ??
+        AnimationController(
+            vsync: this, duration: const Duration(milliseconds: 450));
     _animationController.addListener(() {
       if (mounted) {
         setState(() {});
@@ -62,11 +65,16 @@ class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMix
       end: widget.openForegroundColor,
     ).animate(_animationController);
 
-    final double fractionOfOneSpeedDialChild = 1.0 / widget.speedDialChildren.length;
-    for (int speedDialChildIndex = 0; speedDialChildIndex < widget.speedDialChildren.length; ++speedDialChildIndex) {
-      final List<TweenSequenceItem<double>> tweenSequenceItems = <TweenSequenceItem<double>>[];
+    final double fractionOfOneSpeedDialChild =
+        1.0 / widget.speedDialChildren.length;
+    for (int speedDialChildIndex = 0;
+        speedDialChildIndex < widget.speedDialChildren.length;
+        ++speedDialChildIndex) {
+      final List<TweenSequenceItem<double>> tweenSequenceItems =
+          <TweenSequenceItem<double>>[];
 
-      final double firstWeight = fractionOfOneSpeedDialChild * speedDialChildIndex;
+      final double firstWeight =
+          fractionOfOneSpeedDialChild * speedDialChildIndex;
       if (firstWeight > 0.0) {
         tweenSequenceItems.add(TweenSequenceItem<double>(
           tween: ConstantTween<double>(0.0),
@@ -79,13 +87,17 @@ class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMix
         weight: fractionOfOneSpeedDialChild,
       ));
 
-      final double lastWeight =
-          fractionOfOneSpeedDialChild * (widget.speedDialChildren.length - 1 - speedDialChildIndex);
+      final double lastWeight = fractionOfOneSpeedDialChild *
+          (widget.speedDialChildren.length - 1 - speedDialChildIndex);
       if (lastWeight > 0.0) {
-        tweenSequenceItems.add(TweenSequenceItem<double>(tween: ConstantTween<double>(1.0), weight: lastWeight));
+        tweenSequenceItems.add(TweenSequenceItem<double>(
+            tween: ConstantTween<double>(1.0), weight: lastWeight));
       }
 
-      _speedDialChildAnimations.insert(0, TweenSequence<double>(tweenSequenceItems).animate(_animationController));
+      _speedDialChildAnimations.insert(
+          0,
+          TweenSequence<double>(tweenSequenceItems)
+              .animate(_animationController));
     }
 
     super.initState();
@@ -104,9 +116,12 @@ class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMix
             padding: const EdgeInsets.only(right: 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: widget.speedDialChildren?.map<Widget>((SpeedDialChild speedDialChild) {
+              children: widget.speedDialChildren
+                      ?.map<Widget>((SpeedDialChild speedDialChild) {
                     final Widget speedDialChildWidget = Opacity(
-                      opacity: _speedDialChildAnimations[speedDialChildAnimationIndex].value,
+                      opacity: _speedDialChildAnimations[
+                              speedDialChildAnimationIndex]
+                          .value,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,9 +146,11 @@ class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMix
                             ),
                           ),
                           ScaleTransition(
-                            scale: _speedDialChildAnimations[speedDialChildAnimationIndex],
+                            scale: _speedDialChildAnimations[
+                                speedDialChildAnimationIndex],
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
                               child: FloatingActionButton(
                                 heroTag: speedDialChildAnimationIndex,
                                 mini: true,
