@@ -209,13 +209,15 @@ class _SpeedDialState extends State<SpeedDial>
             child: widget.child,
             foregroundColor: _foregroundColorAnimation.value,
             backgroundColor: _backgroundColorAnimation.value,
-            onPressed: () {
-              if (_animationController.isDismissed) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-            },
+                onPressed: widget.controller == null
+                ? () {
+                    if (_animationController.isDismissed) {
+                      _animationController.forward();
+                    } else {
+                      _animationController.reverse();
+                    }
+                  }
+                : null,
           ),
         )
       ],
